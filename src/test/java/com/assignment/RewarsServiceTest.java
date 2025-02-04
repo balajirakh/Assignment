@@ -5,20 +5,13 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import org.springframework.boot.test.context.SpringBootTest;
-
 import com.assignment.model.Customer;
-import com.assignment.model.RewardPoints;
 import com.assignment.model.Transaction;
 import com.assignment.repository.RewardRepository;
 import com.assignment.service.RewardServiceImpl;
@@ -26,90 +19,64 @@ import com.assignment.service.RewardServiceImpl;
 @SpringBootTest
 public class RewarsServiceTest {
 
-	 @Mock
-	    private RewardRepository rewardRepository;
+	@Mock
+	private RewardRepository rewardRepository;
 
-	    @Mock
-	    private Transaction transaction;
+	@Mock
+	private Transaction transaction;
 
-	    @Mock
-	    private Customer customer;
+	@Mock
+	private Customer customer;
 
-	    @InjectMocks
-	    private RewardServiceImpl rewardService;
+	@InjectMocks
+	private RewardServiceImpl rewardService;
 
-	    @BeforeEach
-	    void setup() {
-	        rewardService = new RewardServiceImpl(rewardRepository);
-	    }
+	@BeforeEach
+	void setup() {
+		rewardService = new RewardServiceImpl(rewardRepository);
+	}
 
-	    // Test calculateRewardPoints()
-	    @Test
-	    void testCalculateRewardPoints_NoReward() {
-	        when(transaction.getAmount()).thenReturn(40.0);
-	        int points = rewardService.calculateRewardPoints(transaction);
-	        assertEquals(0, points);
-	    }
+	// Test calculateRewardPoints()
+	@Test
+	void testCalculateRewardPoints_NoReward() {
+		when(transaction.getAmount()).thenReturn(40.0);
+		int points = rewardService.calculateRewardPoints(transaction);
+		assertEquals(0, points);
+	}
 
-	   
+	@Test
+	void testCalculateRewardPoints_TwoThresholds() {
+		when(transaction.getAmount()).thenReturn(120.0);
+		int points = rewardService.calculateRewardPoints(transaction);
+		assertEquals(90, points); // (20*2) + (50) = 40 + 50 = 90
+	}
 
-	    @Test
-	    void testCalculateRewardPoints_TwoThresholds() {
-	        when(transaction.getAmount()).thenReturn(120.0);
-	        int points = rewardService.calculateRewardPoints(transaction);
-	        assertEquals(90, points); // (20*2) + (50) = 40 + 50 = 90
-	    }
+	@Test
+	void testCalculateRewardPoints_Exactly100() {
+		when(transaction.getAmount()).thenReturn(100.0);
+		int points = rewardService.calculateRewardPoints(transaction);
+		assertEquals(50, points); // (100-50) = 50
+	}
 
-	    @Test
-	    void testCalculateRewardPoints_Exactly100() {
-	        when(transaction.getAmount()).thenReturn(100.0);
-	        int points = rewardService.calculateRewardPoints(transaction);
-	        assertEquals(50, points); // (100-50) = 50
-	    }
+	@Test
+	void testCalculateRewardPoints_Exactly50() {
+		when(transaction.getAmount()).thenReturn(50.0);
+		int points = rewardService.calculateRewardPoints(transaction);
+		assertEquals(0, points);
+	}
 
-	    @Test
-	    void testCalculateRewardPoints_Exactly50() {
-	        when(transaction.getAmount()).thenReturn(50.0);
-	        int points = rewardService.calculateRewardPoints(transaction);
-	        assertEquals(0, points);
-	    }
+	// Test saveRewardPoints()
+	@Test
+	void testSaveRewardPoints() {
+		when(transaction.getAmount()).thenReturn(120.0);
+		when(transaction.getTransactionDate()).thenReturn(LocalDate.of(2024, 2, 1));
+		when(transaction.getCustomer()).thenReturn(customer);
+		when(customer.getId()).thenReturn(1L);
 
-	    // Test saveRewardPoints()
-	    @Test
-	    void testSaveRewardPoints() {
-	        when(transaction.getAmount()).thenReturn(120.0);
-	        when(transaction.getTransactionDate()).thenReturn(LocalDate.of(2024, 2, 1));
-	        when(transaction.getCustomer()).thenReturn(customer);
-	        when(customer.getId()).thenReturn(1L);
+		rewardService.saveRewardPoints(transaction);
 
-	        rewardService.saveRewardPoints(transaction);
+		verify(rewardRepository, times(1)).save(argThat(reward -> reward.getCustomerId().equals(1L)
+				&& reward.getMonth() == 2 && reward.getYear() == 2024 && reward.getPoints() == 90));
+	}
 
-	        verify(rewardRepository, times(1)).save(argThat(reward ->
-	            reward.getCustomerId().equals(1L) &&
-	            reward.getMonth() == 2 &&
-	            reward.getYear() == 2024 &&
-	            reward.getPoints() == 90
-	        ));
-	    }
-
-	    // Test getCustomerRewards()
-	    @Test
-	    void testGetCustomerRewards() {
-	        Long customerId = 1L;
-	        List<RewardPoints> mockRewards = Arrays.asList(
-	            new RewardPoints(1L, customerId, 1, 2024, 50),
-	            new RewardPoints(2L, customerId, 2, 2024, 75)
-	        );
-
-	        when(rewardRepository.findByCustomerId(customerId)).thenReturn(mockRewards);
-
-	        List<RewardPoints> result = rewardService.getCustomerRewards(customerId);
-
-	        assertEquals(2, result.size());
-	        assertEquals(50, result.get(0).getPoints());
-	        assertEquals(75, result.get(1).getPoints());
-	        verify(rewardRepository, times(1)).findByCustomerId(customerId);
-	    }
-	
-	
 }

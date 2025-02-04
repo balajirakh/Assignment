@@ -1,11 +1,8 @@
 package com.assignment.service;
-
 import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.assignment.model.RewardPoints;
 import com.assignment.model.Transaction;
 import com.assignment.repository.RewardRepository;
