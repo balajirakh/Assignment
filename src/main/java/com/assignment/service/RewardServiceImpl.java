@@ -27,10 +27,10 @@ public class RewardServiceImpl {
 
 		if (amount > 100) {
 			points += (int)(amount - 100) * 2;
-			//amount = 100;
+			
 		}
 		if (amount > 50) {
-			//points += (amount - 50);
+			
 			
 			points +=(int)Math.min(amount,100)-50;
 		}

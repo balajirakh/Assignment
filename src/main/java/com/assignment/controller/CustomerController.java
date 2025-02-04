@@ -2,6 +2,8 @@ package com.assignment.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,9 +18,12 @@ import com.assignment.repository.CustomerRepository;
 
 @RestController
 @RequestMapping("/api/customers")
+
 public class CustomerController {
 	@Autowired
 	private CustomerRepository customerRepository;
+
+	Logger log = LoggerFactory.getLogger(CustomerController.class);
 
 	public CustomerController(CustomerRepository customerRepository) {
 		this.customerRepository = customerRepository;
@@ -33,7 +38,9 @@ public class CustomerController {
 
 	@GetMapping("/")
 	public List<Customer> getAllCustomers() {
+		log.info("entering the request for get All getcustomrDetails");
 		return customerRepository.findAll();
+
 	}
 
 	/**
@@ -46,8 +53,11 @@ public class CustomerController {
 
 	@GetMapping("/{id}")
 	public Customer getCustomerById(@PathVariable Long id) {
+		log.info("entering the request for getcustomrDetails with customerId{} ", id);
 		return customerRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Customer with ID " + id + " not found"));
+
+				.orElseThrow(() -> new ResourceNotFoundException("user", "id", id));
+
 	}
 
 	/**
@@ -56,14 +66,14 @@ public class CustomerController {
 	 * @since 1.0
 	 * @param Customer @return 
 	 */
-    @PostMapping("/post")
+	@PostMapping("/post")
 	public Customer addCustomer(@RequestBody Customer customer) {
-
+		log.info("entering the request for  create new customer");
 		if (customer.getName() == null || customer.getEmail() == null) {
 
 			throw new IllegalArgumentException("Customer name and email must not be null");
 		}
-
+		log.info("complete the request for  create new customer");
 		return customerRepository.save(customer);
 	}
 

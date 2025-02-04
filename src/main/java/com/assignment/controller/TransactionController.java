@@ -2,8 +2,10 @@ package com.assignment.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.assignment.exception.ResourceNotFoundException;
+
 import com.assignment.model.Transaction;
 import com.assignment.repository.TransactionRepository;
 import com.assignment.service.RewardServiceImpl;
 
-	
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -27,6 +29,8 @@ public class TransactionController {
 	private TransactionRepository transactionRepository;
 	@Autowired
 	private RewardServiceImpl rewardService;
+
+	Logger log = LoggerFactory.getLogger(TransactionController.class);
 
 	public TransactionController(TransactionRepository transactionRepository, RewardServiceImpl rewardService) {
 		this.transactionRepository = transactionRepository;
@@ -40,17 +44,19 @@ public class TransactionController {
 	 * @param categoryId
 	 * @return  
 	 */
-	
+
 	@GetMapping("/{customerId}")
 	public List<Transaction> getTransactionsByCustomer(@PathVariable Long customerId) {
+
+		log.info("entering the request for getTransactions with customerId{} ", customerId);
 		List<Transaction> transactions = transactionRepository.findByCustomerId(customerId);
 		if (transactions.isEmpty()) {
 			throw new ResourceNotFoundException("No transactions found for customer ID " + customerId);
 		}
+		log.info("complete the request for getTransactions with customerId{} ", customerId);
 		return transactions;
 	}
 
-	
 	/**
 	 * @author Balaji Rakh
 	 * @apiNote To create transaction.
@@ -59,7 +65,7 @@ public class TransactionController {
 	 */
 	@PostMapping("/")
 	public Transaction addTransaction(@RequestBody Transaction transaction) {
-
+		log.info("entering the request for add new Transaction");
 		if (transaction.getAmount() <= 0) {
 
 			throw new IllegalArgumentException("transaction amount must be greater than 0");
@@ -67,6 +73,7 @@ public class TransactionController {
 
 		Transaction save = transactionRepository.save(transaction);
 		rewardService.saveRewardPoints(save);
+		log.info("complete the request for add new Transaction");
 		return save;
 
 	}
