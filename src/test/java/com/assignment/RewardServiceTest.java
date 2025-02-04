@@ -17,7 +17,7 @@ import com.assignment.repository.RewardRepository;
 import com.assignment.service.RewardServiceImpl;
 
 @SpringBootTest
-public class RewarsServiceTest {
+public class RewardServiceTest {
 
 	@Mock
 	private RewardRepository rewardRepository;

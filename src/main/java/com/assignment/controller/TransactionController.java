@@ -30,6 +30,27 @@ public class TransactionController {
 		this.transactionRepository = transactionRepository;
 		this.rewardService = rewardService;
 	}
+	
+	/**
+	 * @author Balaji Rakh
+	 * @apiNote To create transaction.
+	 * @since 1.0
+	 * @param Transaction @return 
+	 */
+	@PostMapping("/")
+	public Transaction addTransaction(@RequestBody Transaction transaction) {
+		log.info("entering the request for add new Transaction");
+		if (transaction.getAmount() <= 0) {
+
+			throw new IllegalArgumentException("transaction amount must be greater than 0");
+		}
+
+		Transaction save = transactionRepository.save(transaction);
+		rewardService.saveRewardPoints(save);
+		log.info("complete the request for add new Transaction");
+		return save;
+
+	}
 
 	/**
 	 * @author Balaji Rakh
@@ -51,25 +72,6 @@ public class TransactionController {
 		return transactions;
 	}
 
-	/**
-	 * @author Balaji Rakh
-	 * @apiNote To create transaction.
-	 * @since 1.0
-	 * @param Transaction @return 
-	 */
-	@PostMapping("/")
-	public Transaction addTransaction(@RequestBody Transaction transaction) {
-		log.info("entering the request for add new Transaction");
-		if (transaction.getAmount() <= 0) {
-
-			throw new IllegalArgumentException("transaction amount must be greater than 0");
-		}
-
-		Transaction save = transactionRepository.save(transaction);
-		rewardService.saveRewardPoints(save);
-		log.info("complete the request for add new Transaction");
-		return save;
-
-	}
+	
 
 }

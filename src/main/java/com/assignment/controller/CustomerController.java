@@ -24,6 +24,24 @@ public class CustomerController {
 	public CustomerController(CustomerRepository customerRepository) {
 		this.customerRepository = customerRepository;
 	}
+	
+	/**
+	 * @author Balaji Rakh
+	 * @apiNote To add new customer Details.
+	 * @since 1.0
+	 * @param Customer @return 
+	 */
+	@PostMapping("/post")
+	public Customer addCustomer(@RequestBody Customer customer) {
+		log.info("entering the request for  create new customer");
+		if (customer.getName() == null || customer.getEmail() == null) {
+
+			throw new IllegalArgumentException("Customer name and email must not be null");
+		}
+		log.info("complete the request for  create new customer");
+		return customerRepository.save(customer);
+	}
+	
 
 	/**
 	 * @author Balaji Rakh
@@ -56,21 +74,6 @@ public class CustomerController {
 
 	}
 
-	/**
-	 * @author Balaji Rakh
-	 * @apiNote To add new customer Details.
-	 * @since 1.0
-	 * @param Customer @return 
-	 */
-	@PostMapping("/post")
-	public Customer addCustomer(@RequestBody Customer customer) {
-		log.info("entering the request for  create new customer");
-		if (customer.getName() == null || customer.getEmail() == null) {
-
-			throw new IllegalArgumentException("Customer name and email must not be null");
-		}
-		log.info("complete the request for  create new customer");
-		return customerRepository.save(customer);
-	}
+	
 
 }

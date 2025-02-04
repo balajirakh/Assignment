@@ -6,11 +6,7 @@ import com.assignment.model.Transaction;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-	
-
 	List<Transaction> findByCustomerId(Long customerId);
 	
 	
-	
-
 }
