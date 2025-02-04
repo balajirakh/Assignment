@@ -24,10 +24,25 @@ public class CustomerController {
 		this.customerRepository = customerRepository;
 	}
 
+	/**
+	 * @author Balaji Rakh
+	 * @apiNote To get All customer data from D/B
+	 * @since 1.0
+	 * @return  
+	 */
+
 	@GetMapping("/")
 	public List<Customer> getAllCustomers() {
 		return customerRepository.findAll();
 	}
+
+	/**
+	 * @author Balaji Rakh
+	 * @apiNote To get customer data from D/B
+	 * @since 1.0
+	 * @param categoryId
+	 * @return  
+	 */
 
 	@GetMapping("/{id}")
 	public Customer getCustomerById(@PathVariable Long id) {
@@ -35,7 +50,13 @@ public class CustomerController {
 				.orElseThrow(() -> new ResourceNotFoundException("Customer with ID " + id + " not found"));
 	}
 
-	@PostMapping("/post")
+	/**
+	 * @author Balaji Rakh
+	 * @apiNote To add new customer Details.
+	 * @since 1.0
+	 * @param Customer @return 
+	 */
+    @PostMapping("/post")
 	public Customer addCustomer(@RequestBody Customer customer) {
 
 		if (customer.getName() == null || customer.getEmail() == null) {

@@ -32,8 +32,13 @@ public class RewardController {
 	        this.rewardService = rewardService;
 	    }
 
-
-	    
+	    /**
+		 * @author Balaji Rakh
+		 * @apiNote To get customer Rewardspoints.
+		 * @param categoryId
+		 * @since 1.0
+		 * @return  
+		 */
 	    @GetMapping("/{customerId}")
 	    public List<RewardPoints> getCustomerRewards(@PathVariable Long customerId){
 	    	List<RewardPoints> rewards = rewardService.getCustomerRewards(customerId);

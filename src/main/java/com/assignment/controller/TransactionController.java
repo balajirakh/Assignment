@@ -33,6 +33,14 @@ public class TransactionController {
 		this.rewardService = rewardService;
 	}
 
+	/**
+	 * @author Balaji Rakh
+	 * @apiNote To get TransactionBycustomer data from D/B
+	 * @since 1.0
+	 * @param categoryId
+	 * @return  
+	 */
+	
 	@GetMapping("/{customerId}")
 	public List<Transaction> getTransactionsByCustomer(@PathVariable Long customerId) {
 		List<Transaction> transactions = transactionRepository.findByCustomerId(customerId);
@@ -42,6 +50,13 @@ public class TransactionController {
 		return transactions;
 	}
 
+	
+	/**
+	 * @author Balaji Rakh
+	 * @apiNote To create transaction.
+	 * @since 1.0
+	 * @param Transaction @return 
+	 */
 	@PostMapping("/")
 	public Transaction addTransaction(@RequestBody Transaction transaction) {
 
