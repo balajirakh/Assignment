@@ -5,10 +5,8 @@ import com.assignment.model.Transaction;
 public class TransactionDTO {
 
 	private Transaction transaction;
-	
+
 	private int rewardPoints;
-	
-	
 
 	public Transaction getTransaction() {
 		return transaction;
@@ -26,21 +24,11 @@ public class TransactionDTO {
 		this.rewardPoints = rewardPoints;
 	}
 
-	
+	public TransactionDTO(Transaction transaction, int rewardPoints) {
 
-	public TransactionDTO(Transaction transaction, int rewardPoints, MonthlyRewardSummaryDTO monthlyRewardSummaryDTO) {
-		
 		this.transaction = transaction;
 		this.rewardPoints = rewardPoints;
-		
+
 	}
-	
-	
 
-	
-
-	
-	
-	
-	
 }

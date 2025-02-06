@@ -1,4 +1,5 @@
 package com.assignment.controller;
+
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,7 @@ public class TransactionController {
 		this.transactionRepository = transactionRepository;
 		this.rewardService = rewardService;
 	}
-	
+
 	/**
 	 * @author Balaji Rakh
 	 * @apiNote To create transaction.
@@ -51,10 +52,10 @@ public class TransactionController {
 		}
 
 		Transaction save = transactionRepository.save(transaction);
-		int rewardPoints=rewardService.saveRewardPoints(save);
+		int rewardPoints = rewardService.saveRewardPoints(save);
 		log.info("complete the request for add new Transaction");
-		TransactionDTO responseDTO = new TransactionDTO(transaction, rewardPoints, null);
-        return ResponseEntity.ok(responseDTO);
+		TransactionDTO responseDTO = new TransactionDTO(transaction, rewardPoints);
+		return ResponseEntity.ok(responseDTO);
 
 	}
 
@@ -77,9 +78,5 @@ public class TransactionController {
 		log.info("complete the request for getTransactions with customerId{} ", customerId);
 		return transactions;
 	}
-	
-	
-
-	 
 
 }

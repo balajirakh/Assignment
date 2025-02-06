@@ -3,14 +3,14 @@ package com.assignment.dto;
 public class MonthlyRewardSummaryDTO {
 
 	private Integer month;
-    private Integer year;
-    private Long totalPoints;
+	private Integer year;
+	private Long totalRewardPoints;
 
-    public MonthlyRewardSummaryDTO(Integer month, Integer year, Long totalPoints) {
-        this.month = month;
-        this.year = year;
-        this.totalPoints = totalPoints;
-    }
+	public MonthlyRewardSummaryDTO(Integer month, Integer year, Long totalPoints) {
+		this.month = month;
+		this.year = year;
+		this.totalRewardPoints = totalPoints;
+	}
 
 	public Integer getMonth() {
 		return month;
@@ -28,14 +28,12 @@ public class MonthlyRewardSummaryDTO {
 		this.year = year;
 	}
 
-	public Long getTotalPoints() {
-		return totalPoints;
+	public Long getTotalRewardPoints() {
+		return totalRewardPoints;
 	}
 
-	public void setTotalPoints(Long totalPoints) {
-		this.totalPoints = totalPoints;
+	public void setTotalRewardPoints(Long totalPoints) {
+		this.totalRewardPoints = totalPoints;
 	}
 
-    
-	
 }

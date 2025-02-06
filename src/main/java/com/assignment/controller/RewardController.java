@@ -49,12 +49,21 @@ public class RewardController {
 
 		log.info("complete the request for getcustomrRewardsDetails with customerId{} ", customerId);
 		return rewards;
-	}	
-	
+	}
+
+	/**
+	 * @author Balaji Rakh
+	 * @apiNote To get getCustomerMonthlyRewardsSummary data.
+	 * @since 1.0
+	 * @param categoryId
+	 * @return  
+	 */
+
 	@GetMapping("/monthly-rewards-summary/{customerId}")
-	public ResponseEntity<List<MonthlyRewardSummaryDTO>> getCustomerMonthlyRewardsSummary(@PathVariable Long customerId) {
-	    List<MonthlyRewardSummaryDTO> rewardsSummary = rewardService.getMonthlyRewardSummary(customerId);
-	    return ResponseEntity.ok(rewardsSummary);
+	public ResponseEntity<List<MonthlyRewardSummaryDTO>> getCustomerMonthlyRewardsSummary(
+			@PathVariable Long customerId) {
+		List<MonthlyRewardSummaryDTO> rewardsSummary = rewardService.getMonthlyRewardSummary(customerId);
+		return ResponseEntity.ok(rewardsSummary);
 	}
 
 }
