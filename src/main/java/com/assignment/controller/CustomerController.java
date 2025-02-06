@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.assignment.exception.IllegalArgumentException1;
 import com.assignment.exception.ResourceNotFoundException;
 import com.assignment.model.Customer;
 import com.assignment.repository.CustomerRepository;
@@ -36,7 +38,7 @@ public class CustomerController {
 		log.info("entering the request for  create new customer");
 		if (customer.getName() == null || customer.getEmail() == null) {
 
-			throw new IllegalArgumentException("Customer name and email must not be null");
+			throw new IllegalArgumentException1("Customer name and email must not be null");
 		}
 		log.info("complete the request for  create new customer");
 		return customerRepository.save(customer);

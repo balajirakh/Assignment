@@ -3,12 +3,17 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.assignment.dto.MonthlyRewardSummaryDTO;
+import com.assignment.dto.TransactionDTO;
+import com.assignment.exception.IllegalArgumentException1;
 import com.assignment.exception.ResourceNotFoundException;
 import com.assignment.model.Transaction;
 import com.assignment.repository.TransactionRepository;
@@ -38,17 +43,18 @@ public class TransactionController {
 	 * @param Transaction @return 
 	 */
 	@PostMapping("/")
-	public Transaction addTransaction(@RequestBody Transaction transaction) {
+	public ResponseEntity<TransactionDTO> addTransaction(@RequestBody Transaction transaction) {
 		log.info("entering the request for add new Transaction");
 		if (transaction.getAmount() <= 0) {
 
-			throw new IllegalArgumentException("transaction amount must be greater than 0");
+			throw new IllegalArgumentException1("transaction amount must be greater than 0");
 		}
 
 		Transaction save = transactionRepository.save(transaction);
-		rewardService.saveRewardPoints(save);
+		int rewardPoints=rewardService.saveRewardPoints(save);
 		log.info("complete the request for add new Transaction");
-		return save;
+		TransactionDTO responseDTO = new TransactionDTO(transaction, rewardPoints, null);
+        return ResponseEntity.ok(responseDTO);
 
 	}
 
@@ -71,7 +77,9 @@ public class TransactionController {
 		log.info("complete the request for getTransactions with customerId{} ", customerId);
 		return transactions;
 	}
-
 	
+	
+
+	 
 
 }

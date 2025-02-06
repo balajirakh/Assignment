@@ -3,6 +3,8 @@ import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.assignment.dto.MonthlyRewardSummaryDTO;
 import com.assignment.model.RewardPoints;
 import com.assignment.model.Transaction;
 import com.assignment.repository.RewardRepository;
@@ -23,32 +25,37 @@ public class RewardServiceImpl {
 		int points = 0;
 
 		if (amount > 100) {
-			points += (int)(amount - 100) * 2;
+		points += (int)(amount - 100) * 2;
 			
 		}
 		if (amount > 50) {
 			
-			
-			points +=(int)Math.min(amount,100)-50;
+		points +=(int)Math.min(amount,100)-50;
+		
 		}
 
 		return points;
 	}
 
-	public  void saveRewardPoints(Transaction transaction) {
+	public  int saveRewardPoints(Transaction transaction) {
 		int points = calculateRewardPoints(transaction);
 		LocalDate date = transaction.getTransactionDate();
 
 		RewardPoints reward = new RewardPoints(null, transaction.getCustomer().getId(), date.getMonthValue(),
 				date.getYear(), points);
 
-		rewardRepository.save(reward); 
+		rewardRepository.save(reward);
+		return points; 
 	}
 
 	public List<RewardPoints> getCustomerRewards(Long CustomerId) {
 
 		return rewardRepository.findByCustomerId(CustomerId);
 
+	}
+	
+	public List<MonthlyRewardSummaryDTO> getMonthlyRewardSummary(Long customerId) {
+	    return rewardRepository.getMonthlyRewardSummary(customerId);
 	}
 	
 }

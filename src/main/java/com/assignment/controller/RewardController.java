@@ -4,10 +4,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.assignment.dto.MonthlyRewardSummaryDTO;
 import com.assignment.exception.ResourceNotFoundException;
 import com.assignment.model.RewardPoints;
 import com.assignment.service.RewardServiceImpl;
@@ -16,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/rewards")
 @RequiredArgsConstructor
-
 public class RewardController {
 	@Autowired
 	private RewardServiceImpl rewardService;
@@ -47,6 +49,12 @@ public class RewardController {
 
 		log.info("complete the request for getcustomrRewardsDetails with customerId{} ", customerId);
 		return rewards;
+	}	
+	
+	@GetMapping("/monthly-rewards-summary/{customerId}")
+	public ResponseEntity<List<MonthlyRewardSummaryDTO>> getCustomerMonthlyRewardsSummary(@PathVariable Long customerId) {
+	    List<MonthlyRewardSummaryDTO> rewardsSummary = rewardService.getMonthlyRewardSummary(customerId);
+	    return ResponseEntity.ok(rewardsSummary);
 	}
 
 }
