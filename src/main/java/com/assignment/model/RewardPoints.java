@@ -1,5 +1,5 @@
 package com.assignment.model;
-
+  
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class RewardPoints {
 
 	@Id
@@ -60,9 +58,9 @@ public class RewardPoints {
 		this.points = points;
 	}
 	public RewardPoints() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+		
+		// TODO Auto-generated constructor stub}
+		}
 	
 
 }
