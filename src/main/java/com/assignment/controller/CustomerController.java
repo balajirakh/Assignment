@@ -31,7 +31,7 @@ public class CustomerController {
 	 * @author Balaji Rakh
 	 * @apiNote To add new customer Details.
 	 * @since 1.0
-	 * @param Customer @return 
+	 * @param customer
 	 */
 	@PostMapping("/post")
 	public Customer addCustomer(@RequestBody Customer customer) {
@@ -63,7 +63,7 @@ public class CustomerController {
 	 * @author Balaji Rakh
 	 * @apiNote To get customer data from D/B
 	 * @since 1.0
-	 * @param categoryId
+	 * @param id
 	 * @return  
 	 */
 
